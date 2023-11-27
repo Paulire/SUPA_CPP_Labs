@@ -36,21 +36,31 @@ vector2d read_file( string f_name )
 
         FileObj.close();
 
-        cout << "There are " << num_lines << " lines\n";
+        //cout << "There are " << num_lines << " lines\n";
 
         return data;
 }
 
-void print_vector( vector2d data, int N )
+void write_file( string f_name, vector2d data )
 {
-        if ( N > data.size() ) {
-                cout << "Warning: N is greater than the number of line, setting N=3" << endl;
-                N = 3;
-        }
+        ofstream FileObj;
+        FileObj.open( f_name );
 
-        for( int i=0; i<N; i++ ) {
-                cout << data[i][0] << " " << data[i][1] << endl;
-        }
+        for ( vector<double> v : data )
+                FileObj << v[0] << " " << v[1] << endl;
+
+        FileObj.close();
+}
+
+void write_file( string f_name, vector<double> data )
+{
+        ofstream FileObj;
+        FileObj.open( f_name );
+
+        for ( double v : data )
+                FileObj << v << endl;
+
+        FileObj.close();
 }
 
 // Computes the megniude of a set of vectors returned as a magnitude
@@ -61,10 +71,7 @@ vector<double> get_magnitude( vector2d data )
 
         for( int i=0; i<data.size(); i++ ) {
                 abs.push_back( sqrt( data[i][0]*data[i][0] + data[i][1]*data[i][1] ) );
-
-                cout << abs[i] << endl;
         }
-
 
         return abs;
 }
@@ -97,5 +104,69 @@ vector<double> least_square( vector2d data ) {
         m_c[0] = numerator/denominator; // m
         m_c[1] = y_avr - m_c[0]*x_avr;  // c
 
+        vector2d errors = read_file( "error2D_float.txt" );
+
+        // Chi square calulation
+        double chi = 0;
+        string a;
+        for ( int i=0; i<data.size(); i++ ) {
+                chi += pow( data[i][1] - ( m_c[0]*data[i][0]+m_c[1]),
+                            2 )/pow( errors[i][0], 2 );
+        }
+
+        cout << "chi^2=" << chi << endl;
+
         return m_c;
+}
+
+vector<double> power_vector( vector2d data )
+{
+        vector<double> out;
+
+        for( int i=0; i<data.size(); i++ ) {
+                out.push_back(
+                        power( data[i][0], data[i][1] )
+                );
+        }
+
+        return out;
+}
+
+double power( double x, double exp )
+{
+        int exp_int = round( exp );
+
+        if (exp_int == 0 ) {
+                return 1;
+        }
+
+        return x*power( x, (float) exp_int-1 ); // Not a loop, just a recursive function call :D
+}
+
+// Print functions
+void print( vector2d data, int N )
+{
+        __print_check_size__( data.size(), &N );
+
+        for( int i=0; i<N; i++ ) {
+                cout << data[i][0] << " " << data[i][1] << endl;
+        }
+}
+
+void print( vector<double> data, int N )
+{
+        __print_check_size__( data.size(), &N );
+
+        for( int i=0; i<N; i++ )
+        {
+                cout << data[i] << endl;
+        }
+}
+
+void __print_check_size__( int size_data, int * N )
+{
+        if ( *N > size_data ) {
+                *N = 5;
+                cout << "Warning: Number of lines is greater than the total number of lines in file, setting N=" << *N << endl;
+        }
 }

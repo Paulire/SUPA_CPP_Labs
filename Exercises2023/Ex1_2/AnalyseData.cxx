@@ -3,51 +3,83 @@
 
 #include <iostream>
 #include <cstring>
+#include <string>
 #include <fstream>
 
 #include "CustomFunctions.h"
 
-using namespace std;
-
-// Declerations
+int get_num_lines( )
+{
+        int n;
+        cout << "How many lines?\n $ ";
+        cin >> n;
+        return n;
+}
 
 int main( )
 {
-        // Load data from file
-        vector2d data = read_file( "./input2D_float.txt" );
+        // Var
+        int num_lines;
+        vector2d data;
+        int user_input;
+        vector<double> exp;
+        vector<double> mag;
+        vector<double> m_g;
+        string input_file_loc = "./input2D_float.txt";
 
-        char user_input[20];
-        cout << "Would you like [print] or display [mag]nitude? ";
-        cin >> user_input;
+        // Load
+        std::cout << "Loading file...";
+        data = read_file( input_file_loc );
+        std::cout << "Done!\n";
 
-        // Print vectors 
-        if ( strcmp( "print", user_input ) == 0 ){
-                int no_lines;
-                cout << "How many line? ";
-                cin >> no_lines;
+        // Preamble
+        std::cout << "Would you like:\n\t (1) print file\n\t (2) calculate and print magnitudes\n\t (3) get fit (least squares method)\n\t (4) calulate x^y\n\t (9) to quit\n";
+        std::cout << "Options 2,3,4 will produce an output text file of resaults.\n";
 
-                print_vector( data, no_lines );
-        }
+        // Main shell
+        do {
+                // Input
+                std::cout << " $ ";
+                std::cin >> user_input;
 
-        // Calulate each vectors magnitude
-        if ( strcmp( "mag", user_input ) == 0 || strcmp( "magnitude", user_input ) == 0 ) {
-                vector<double> abs = get_magnitude( data );
-        }
+                switch (user_input)
+                {
+                // Print
+                case 1:
+                        num_lines = get_num_lines( );
+                        print( data, num_lines );
+                        break;
+                
+                // Magnitude
+                case 2:
+                        mag = get_magnitude( data );
+                        num_lines = get_num_lines( );
+                        print( mag, num_lines );
 
-        // Calulates best fit LSM
-        vector <double> m_c = least_square( data );
+                        write_file( "abs_results.txt", mag );
+                        break;
+                
+                case 3:
+                        m_g = least_square( data );
+                        cout << "y=" << m_g[0] << "x+" << m_g[1] << endl;
+                        break;
 
-        cout << "Best fit: " << "\n\ty=" << m_c[0] << "x+" << m_c[1] << endl;
+                case 4:
+                        exp = power_vector( data );
+                        num_lines = get_num_lines( );
+                        print( exp, num_lines );
 
-        // Save fit output
-        ofstream File_out( "line_out.txt" );
-        if ( File_out.fail() ) {
-                cout << "Error: could not load file...\n";
-                exit(-1);
-        }
+                        write_file( "exp_results.txt", exp );
+                        break;
 
-        File_out << "Best fitline\ny=" << m_c[0] << "x+" << m_c[1];
-        File_out.close();
+                case 9:
+                        break;
+                
+                default:
+                        std::cout << "Unknown input" << endl;
+                        break;
+                }
+        } while( user_input != 9 );
 
         return 0;
 }
