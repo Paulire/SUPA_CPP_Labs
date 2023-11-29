@@ -64,12 +64,12 @@ int main( )
                 case 3:
                         m_g = least_square( data );     // Returns [0] m, [1] c, [3] chi^2/NDF
                         cout << "y=" << m_g[0] << "x+" << m_g[1] << endl;
-                        cout << "chi^2/NDF=" << m_g[3] << endl;
+                        cout << "chi^2/NDF=" << m_g[2] << endl;
                         
                         f.open( "Outputs/fit_resaults.txt" );
 
                         f << "y=" << m_g[0] << "x+" << m_g[1] << endl;
-                        f << "chi^2/NDF=" << m_g[3] << endl;
+                        f << "chi^2/NDF=" << m_g[2] << endl;
 
                         f.close();
                         break;

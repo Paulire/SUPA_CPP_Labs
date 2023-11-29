@@ -111,8 +111,10 @@ vector<double> least_square( vector2d data ) {
         string a;
         for ( int i=0; i<data.size(); i++ ) {
                 chi_2 += pow( data[i][1] - ( m_c[0]*data[i][0]+m_c[1]),
-                            2 )/pow( errors[i][0], 2 );
+                            2 )/pow( errors[i][1], 2 );
         }
+
+        cout << chi_2 << endl;
 
         m_c[2] = chi_2/2;
 
