@@ -25,9 +25,10 @@ int main( )
         vector<double> exp;
         vector<double> mag;
         vector<double> m_g;
+        ofstream f;
         string input_file_loc = "./input2D_float.txt";
 
-        // Load
+        // Load file
         std::cout << "Loading file...";
         data = read_file( input_file_loc );
         std::cout << "Done!\n";
@@ -44,13 +45,13 @@ int main( )
 
                 switch (user_input)
                 {
-                // Print
+                // Print file
                 case 1:
                         num_lines = get_num_lines( );
                         print( data, num_lines );
                         break;
                 
-                // Magnitude
+                // Calcualte magnitude and print resault
                 case 2:
                         mag = get_magnitude( data );
                         num_lines = get_num_lines( );
@@ -59,9 +60,18 @@ int main( )
                         write_file( "abs_results.txt", mag );
                         break;
                 
+                // Get fit line +chi^2 paramiter and prints the answer and writes it to a flie
                 case 3:
-                        m_g = least_square( data );
+                        m_g = least_square( data );     // Returns [0] m, [1] c, [3] chi^2/NDF
                         cout << "y=" << m_g[0] << "x+" << m_g[1] << endl;
+                        cout << "chi^2/NDF=" << m_g[3] << endl;
+                        
+                        f.open( "fit_resaults " );
+
+                        f << "y=" << m_g[0] << "x+" << m_g[1] << endl;
+                        f << "chi^2/NDF=" << m_g[3] << endl;
+
+                        f.close();
                         break;
 
                 case 4:

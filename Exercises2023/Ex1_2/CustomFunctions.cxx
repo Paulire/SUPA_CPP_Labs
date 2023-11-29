@@ -36,11 +36,10 @@ vector2d read_file( string f_name )
 
         FileObj.close();
 
-        //cout << "There are " << num_lines << " lines\n";
-
         return data;
 }
 
+// Writes f_name file of datatype 2D vector
 void write_file( string f_name, vector2d data )
 {
         ofstream FileObj;
