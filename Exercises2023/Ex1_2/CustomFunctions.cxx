@@ -51,6 +51,7 @@ void write_file( string f_name, vector2d data )
         FileObj.close();
 }
 
+// Writes f_name file of datatype 1D vector
 void write_file( string f_name, vector<double> data )
 {
         ofstream FileObj;
@@ -65,7 +66,6 @@ void write_file( string f_name, vector<double> data )
 // Computes the megniude of a set of vectors returned as a magnitude
 vector<double> get_magnitude( vector2d data )
 {
-        cout << "Magnitudes" << endl;
         vector<double> abs;
 
         for( int i=0; i<data.size(); i++ ) {
@@ -91,10 +91,11 @@ vector<double> least_square( vector2d data ) {
 
         // Get gradient
         double x_temp;
-        vector<double> m_c = { 0, 0 };
+        vector<double> m_c = { 0, 0, 0 };
         double numerator = 0;
         double denominator = 0;
 
+        // Checks each data point and determines the numerator and denomin
         for ( vector<double> v : data ) {
                 x_temp = x_avr - v[0];
                 numerator += x_temp*( y_avr - v[1] );
@@ -106,18 +107,21 @@ vector<double> least_square( vector2d data ) {
         vector2d errors = read_file( "error2D_float.txt" );
 
         // Chi square calulation
-        double chi = 0;
+        double chi_2 = 0;
         string a;
         for ( int i=0; i<data.size(); i++ ) {
-                chi += pow( data[i][1] - ( m_c[0]*data[i][0]+m_c[1]),
-                            2 )/pow( errors[i][0], 2 );
+                chi_2 += pow( data[i][1] - ( m_c[0]*data[i][0]+m_c[1]),
+                            2 )/pow( errors[i][1], 2 );
         }
 
-        cout << "chi^2=" << chi << endl;
+        cout << chi_2 << endl;
+
+        m_c[2] = chi_2/2;
 
         return m_c;
 }
 
+// Takes data and gets x^int(y)
 vector<double> power_vector( vector2d data )
 {
         vector<double> out;
@@ -131,8 +135,10 @@ vector<double> power_vector( vector2d data )
         return out;
 }
 
+// Redo of pow
 double power( double x, double exp )
 {
+        // Makes exponent int
         int exp_int = round( exp );
 
         if (exp_int == 0 ) {
@@ -142,9 +148,10 @@ double power( double x, double exp )
         return x*power( x, (float) exp_int-1 ); // Not a loop, just a recursive function call :D
 }
 
-// Print functions
+// Prints N data points
 void print( vector2d data, int N )
 {
+        // If N>num_lines: N=5
         __print_check_size__( data.size(), &N );
 
         for( int i=0; i<N; i++ ) {
@@ -152,6 +159,7 @@ void print( vector2d data, int N )
         }
 }
 
+// Same as before except takes double
 void print( vector<double> data, int N )
 {
         __print_check_size__( data.size(), &N );
@@ -162,6 +170,7 @@ void print( vector<double> data, int N )
         }
 }
 
+// Checks if print line num is greater than the total number of line
 void __print_check_size__( int size_data, int * N )
 {
         if ( *N > size_data ) {

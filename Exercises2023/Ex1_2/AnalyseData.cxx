@@ -57,29 +57,30 @@ int main( )
                         num_lines = get_num_lines( );
                         print( mag, num_lines );
 
-                        write_file( "abs_results.txt", mag );
+                        write_file( "Outputs/abs_results.txt", mag );
                         break;
                 
                 // Get fit line +chi^2 paramiter and prints the answer and writes it to a flie
                 case 3:
                         m_g = least_square( data );     // Returns [0] m, [1] c, [3] chi^2/NDF
                         cout << "y=" << m_g[0] << "x+" << m_g[1] << endl;
-                        cout << "chi^2/NDF=" << m_g[3] << endl;
+                        cout << "chi^2/NDF=" << m_g[2] << endl;
                         
-                        f.open( "fit_resaults " );
+                        f.open( "Outputs/fit_resaults.txt" );
 
                         f << "y=" << m_g[0] << "x+" << m_g[1] << endl;
-                        f << "chi^2/NDF=" << m_g[3] << endl;
+                        f << "chi^2/NDF=" << m_g[2] << endl;
 
                         f.close();
                         break;
 
+                // Get the x^y for each point and returns to STD and file
                 case 4:
                         exp = power_vector( data );
                         num_lines = get_num_lines( );
                         print( exp, num_lines );
 
-                        write_file( "exp_results.txt", exp );
+                        write_file( "Outputs/exp_results.txt", exp );
                         break;
 
                 case 9:
