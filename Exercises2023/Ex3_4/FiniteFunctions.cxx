@@ -62,8 +62,20 @@ Integration by hand (output needed to normalise function when plotting)
 ###################
 */ 
 double FiniteFunction::integrate(int Ndiv){ //private
-  //ToDo write an integrator
-  return -99;  
+  // Integrates via sum of evenly spaced points devided by number of steps
+  double area, x_min, x_max, step, x;
+  area = 0;
+  x_min= -10; x_max = 10;
+  step = (x_max - x_min)/(double)Ndiv;
+
+  x = x_min;
+
+  for ( int i=0; i<Ndiv; i++ ) {
+    area += this->callFunction( x );
+    x += step;
+  }
+
+  return area*step;  
 }
 double FiniteFunction::integral(int Ndiv) { //public
   if (Ndiv <= 0){
@@ -144,6 +156,7 @@ std::vector< std::pair<double,double> > FiniteFunction::scanFunction(int Nscan){
     std::cout << "Integral not set, doing it now" << std::endl;
     this->integral(Nscan);
     std::cout << "integral: " << m_Integral << ", calculated using " << Nscan << " divisions" << std::endl;
+    std::cout << m_Integral << std::endl;
   }
   //For each scan point push back the x and y values 
   for (int i = 0; i < Nscan; i++){
@@ -162,6 +175,9 @@ std::vector< std::pair<double,double> > FiniteFunction::makeHist(std::vector<dou
   for (double point : points){
     //Get bin index (starting from 0) the point falls into using point value, range, and Nbins
     int bindex = static_cast<int>(floor((point-m_RMin)/((m_RMax-m_RMin)/(double)Nbins)));
+    if (bindex<0 || bindex>Nbins){
+      continue;
+    }
     bins[bindex]++; //weight of 1 for each data point
     norm++; //Total number of data points
   }
