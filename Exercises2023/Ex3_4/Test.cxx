@@ -6,7 +6,7 @@
 
 int main( int argc, char * argv[] )
 {
-    std::string input_f_name = "Outputs/data/MysteryData21100.txt";
+    std::string input_f_name = "Outputs/data/MysteryData12141.txt";
     std::vector<double> data;
     std::string cache;
 
@@ -23,7 +23,7 @@ int main( int argc, char * argv[] )
    f.close();
 
 
-    FiniteFunction finite( -5, 5, "Outputs/data/MysteryData21100.txt" );
+    FiniteFunction finite( -5, 5, "Outputs/data/12141.txt" );
     finite.plotData( data, 20 );
     finite.plotFunction();
 
