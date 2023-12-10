@@ -1,7 +1,7 @@
 CC=g++ #Name of compiler
 FLAGS=-std=c++20 -w #Compiler flags (the s makes it silent)
 TARGET=Test #Executable name
-OBJECTS=Test.o FiniteFunctions.o
+OBJECTS=Test.o FiniteFunctions.o normFunctions.o
 LIBS=-I ../../GNUplot/ -lboost_iostreams
 
 #First target in Makefile is default
@@ -15,6 +15,9 @@ Test.o : Test.cxx FiniteFunctions.h
 
 FiniteFunctions.o : FiniteFunctions.cxx FiniteFunctions.h
 	${CC} ${FLAGS} ${LIBS} -c FiniteFunctions.cxx
+
+normFunctions.o : normFunctions.cxx normFunctions.h
+	${CC} ${FLAGS} ${LIBS} -c normFunctions.cxx
 
 clean: #No targets just run shell command to rm object files and emacs backups
 	@rm -f *.o *~

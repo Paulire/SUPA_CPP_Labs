@@ -3,6 +3,7 @@
 #include <string>
 
 #include "FiniteFunctions.h"
+#include "normFunctions.h"
 
 int main( int argc, char * argv[] )
 {
@@ -20,12 +21,18 @@ int main( int argc, char * argv[] )
              data.push_back( std::stod( cache) );
     }
    
-   f.close();
+    f.close();
 
 
-    FiniteFunction finite( -5, 5, "Outputs/data/12141.txt" );
+    /*FiniteFunction finite( -5, 5, "Outputs/data/MysteryData12141.txt" );
     finite.plotData( data, 20 );
-    finite.plotFunction();
+    finite.plotFunction();*/
+
+    //delete &finite;
+
+    NormFunction norm( -5, 5, "Outputs/data/MysteryData21100.txt");
+    norm.plotData( data, 20 );
+    norm.plotFunction();
 
     return 0;
 }
