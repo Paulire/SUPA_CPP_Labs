@@ -63,12 +63,12 @@ Integration by hand (output needed to normalise function when plotting)
 */ 
 double FiniteFunction::integrate(int Ndiv){ //private
   // Integrates via sum of evenly spaced points devided by number of steps
-  double area, x_min, x_max, step, x;
-  area = 0;
-  x_min= -10; x_max = 10;
-  step = (x_max - x_min)/(double)Ndiv;
+  double area, step, x;
 
-  x = x_min;
+  // Definitions
+  area = 0;
+  step = (m_RMax - m_RMin)/(double)Ndiv;
+  x = m_RMin;
 
   for ( int i=0; i<Ndiv; i++ ) {
     area += this->callFunction( x );
@@ -175,7 +175,7 @@ std::vector< std::pair<double,double> > FiniteFunction::makeHist(std::vector<dou
   for (double point : points){
     //Get bin index (starting from 0) the point falls into using point value, range, and Nbins
     int bindex = static_cast<int>(floor((point-m_RMin)/((m_RMax-m_RMin)/(double)Nbins)));
-    if (bindex<0 || bindex>Nbins){
+    if (bindex<0 || bindex>Nbins-1){
       continue;
     }
     bins[bindex]++; //weight of 1 for each data point

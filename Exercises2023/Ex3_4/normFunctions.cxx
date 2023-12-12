@@ -17,10 +17,11 @@ NormFunction::NormFunction(double range_min, double range_max, std::string outfi
 };
 
 double NormFunction::guassian(double x) {
-    double K = var*sqrt( 2*M_PI );
-    double N = pow( (x-mean)/var, 2 )/2;
+    double stdiv = sqrt( var );
+    double C = stdiv*sqrt( 2*M_PI );
+    double N = pow( (x-mean)/stdiv, 2 )/2;
 
-    return exp(-N)/K;
+    return exp(-N)/C;
 };
 
 double NormFunction::getMean( void ) {
@@ -88,4 +89,59 @@ double CauchyLorenzFunction::callFunction( double x ) {
     }
 
     return this->CauchyLorenz(x);
+};
+
+/*
+* Negitive Crystal Ball function
+*/
+NegCrystalBallFunction::NegCrystalBallFunction( ) {
+    NormFunction( );
+};
+
+// Initlized constructer
+NegCrystalBallFunction::NegCrystalBallFunction(double range_min, double range_max, std::string outfile) {
+    NormFunction(range_min, range_max, outfile);
+};
+
+void NegCrystalBallFunction::setNCBparams( void ) {
+    A = pow(n/alpha,n)*exp( -pow(alpha,2)/2);
+    B = n/alpha - alpha;
+    C = (n/alpha)*(1/(n-1))*exp( -pow(alpha,2)/2);
+    D = sqrt(M_PI/2)*( 1 - erf( alpha/sqrt(2)));
+    N = 1/(var*(C+D));
+
+    std::cout << "A: " << A << "\nB: " << B << "\nC: " << C << "\nD: " << D << "\nN: " << N << std::endl;
+};
+
+double NegCrystalBallFunction::guassian(double x) {
+    double K = pow( (x-mean)/var, 2 )/2;
+
+    return N*exp(-K);
+};
+
+double NegCrystalBallFunction::poly( double x ) {
+    return N*A*pow(B-(x-mean)/var,-n );
 }
+
+double NegCrystalBallFunction::NegCrystalBall( double x )
+{
+    double conditition = ( x - mean )/var;
+
+    if( conditition > -alpha)
+        return this->guassian( x );
+    else if( conditition <= -alpha )
+        return this->poly( x );
+
+    std::cout << "Unknown error in Crystal ball function\n";
+    exit(-1);
+}
+
+double NegCrystalBallFunction::callFunction( double x ) {
+    if( !mean ) {
+        double w = this->getMean( );
+        this->getVar( w );
+        this->setNCBparams( );
+    }
+
+    return this->NegCrystalBall(x);
+};
