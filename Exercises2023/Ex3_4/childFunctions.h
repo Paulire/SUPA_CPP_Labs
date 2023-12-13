@@ -1,3 +1,6 @@
+// Paul M Ireland
+// childFunctions.h
+
 #include "FiniteFunctions.h"
 
 /*

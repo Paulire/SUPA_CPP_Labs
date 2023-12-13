@@ -34,7 +34,6 @@ void FiniteFunction::sample_metro( int interations ) {
 
     // Generate inital random point
     x_i.push_back( r_data_range( gen ) );
-    std::cout << x_i[0] << std::endl;
 
     // Preform random walk for so many itterations
     for( int i=0; i<interations; i++ ){
@@ -204,7 +203,6 @@ std::vector< std::pair<double,double> > FiniteFunction::scanFunction(int Nscan){
     std::cout << "Integral not set, doing it now" << std::endl;
     this->integral(Nscan);
     std::cout << "integral: " << m_Integral << ", calculated using " << Nscan << " divisions" << std::endl;
-    std::cout << m_Integral << std::endl;
   }
   //For each scan point push back the x and y values 
   for (int i = 0; i < Nscan; i++){

@@ -13,6 +13,7 @@
 NormFunction::NormFunction( ) {
     fun_mean = 1;
     fun_std = 1;
+    this->checkPath("normalFunction");
     FiniteFunction( );
 };
 
@@ -20,6 +21,8 @@ NormFunction::NormFunction( ) {
 NormFunction::NormFunction(double range_min, double range_max, std::string outfile, double x_0, double sigma ) {
     fun_mean = x_0;
     fun_std = sigma;
+
+    this->checkPath("normalFunction");
 
     FiniteFunction(range_min, range_max, outfile);
 };
@@ -44,6 +47,7 @@ double NormFunction::callFunction(double x ) {
 CauchyLorenzFunction::CauchyLorenzFunction( ) {
     fun_mean = 1;
     fun_fwhm = 1;
+    this->checkPath("CauchyLorenzFunction");
     FiniteFunction( );
 };
 
@@ -55,6 +59,8 @@ CauchyLorenzFunction::CauchyLorenzFunction(double range_min, double range_max, s
         fun_fwhm = 1;
     } else
         fun_fwhm = gamma;
+
+    this->checkPath("CauchyLorenzFunction");
 
     fun_mean = x_0;
 
@@ -78,6 +84,7 @@ double CauchyLorenzFunction::callFunction( double x ) {
 */
 // Empty constructer
 NegCrystalBallFunction::NegCrystalBallFunction( ) {
+    this->checkPath("Negitive Crystal Ball Function");
     FiniteFunction( );
 }
 
@@ -99,6 +106,8 @@ NegCrystalBallFunction::NegCrystalBallFunction(double range_min, double range_ma
     fun_mean = x_0;
 
     this->setNCBparams();
+
+    this->checkPath("Negitive Crystal Ball Function");
     
     FiniteFunction(range_min, range_max, outfile);
 };

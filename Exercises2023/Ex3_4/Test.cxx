@@ -43,6 +43,7 @@ int main( int argc, char * argv[] )
         finite.plotData( data, 100 );   // Plot data
         finite.plotFunction();
         finite.sample_metro( 10000 );
+        finite.printInfo();
 
     } else if( !strcmp( argv[1], "norm" ) ) {
         // Guasian
@@ -52,6 +53,7 @@ int main( int argc, char * argv[] )
         norm.plotData( data, 100, true );
         norm.plotFunction();
         norm.sample_metro( 10000 );
+        norm.printInfo();
 
     } else if( !strcmp( argv[1], "CL" ) ) {
         // Cauchy-Lorenz
@@ -61,6 +63,7 @@ int main( int argc, char * argv[] )
         cauch.plotData( data, 100 );
         cauch.plotFunction();
         cauch.sample_metro( 10000 );
+        cauch.printInfo();
     } else if( !strcmp( argv[1], "NCB" ) ) {
         // Negitive Crystal Ball
         NegCrystalBallFunction ncbf( -5, 5, "Outputs/data/MysteryData21100.txt",
@@ -71,6 +74,7 @@ int main( int argc, char * argv[] )
         ncbf.plotData( data, 100 );
         ncbf.plotFunction( );
         ncbf.sample_metro( 10000 );
+        ncbf.printInfo();
     } else {
         // No knowen args
         std::printf("Expected input argument of either ['default','norm','CL','NCB']\n" );
