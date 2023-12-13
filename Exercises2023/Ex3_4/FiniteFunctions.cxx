@@ -3,10 +3,58 @@
 #include <vector>
 #include "FiniteFunctions.h"
 #include <filesystem> //To check extensions in a nice way
+#include <random>
 
 #include "gnuplot-iostream.h" //Needed to produce plots (not part of the course) 
 
 using std::filesystem::path;
+
+/*
+###################
+// Methods for metropolis algrithum
+###################
+*/ 
+
+// This generates a random number on a normal distrobution about a mean
+double FiniteFunction::norm_rand( double x, double mean ) {
+    int pm = 2*(rand()%2)-1; // Randon plus or minus
+
+    return sqrt( -log(x) )*pm - mean;
+}
+
+void FiniteFunction::sample_metro( int interations ) {
+    // Declerations
+    double range = m_RMax - m_RMin;
+    std::vector<double> x_i;
+
+    // Random number
+    std::mt19937 gen( time(0) );
+    std::uniform_real_distribution<double> r_data_range( m_RMin, m_RMax );
+    std::uniform_real_distribution<double> r_zero_to_one( 0, 1 );
+
+    // Generate inital random point
+    x_i.push_back( r_data_range( gen ) );
+    std::cout << x_i[0] << std::endl;
+
+    // Preform random walk for so many itterations
+    for( int i=0; i<interations; i++ ){
+        // New position to test
+        double y = this->norm_rand( r_zero_to_one( gen ), x_i.back() );
+
+        // Preform test
+        double A = this->callFunction( y )/this->callFunction( x_i.back() );
+        if ( A > 1.0 ) 
+            A=1;
+        
+        // Get acceptance condition
+        if ( A>r_zero_to_one( gen ) ) {
+          x_i.push_back( y );
+        } else {
+          x_i.push_back( x_i.back() );
+        }
+    }
+    this->plotData( x_i, 100, false );
+}
 
 //Empty constructor
 FiniteFunction::FiniteFunction(){

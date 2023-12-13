@@ -24,6 +24,10 @@ public:
   virtual void printInfo(); //Dump parameter info about the current function (Overridable)
   virtual double callFunction(double x); //Call the function with value x (Overridable)
 
+  // Metropolis methods
+  void sample_metro( int interations );
+  double norm_rand( double x, double mean ); 
+
   //Protected members can be accessed by child classes but not users
 protected:
   double m_RMin;
